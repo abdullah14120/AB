@@ -1,0 +1,28 @@
+name: Sync APK to Pages
+
+on:
+  workflow_dispatch: # يتيح لك تشغيل السكربت يدوياً بضغطة زر
+
+jobs:
+  download_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download APK from Remote
+        run: |
+          # استبدل الرابط أدناه برابط التحميل المباشر (Direct Link) لنسختك
+          wget -O ABWhatsApp_Blue_v30_arm64.apk "https://your-direct-link-here.com/file.apk"
+
+      - name: Generate Index (Optional)
+        run: |
+          # هنا يمكننا تشغيل سكربت generate.sh إذا كان موجوداً
+          chmod +x generate.sh && ./generate.sh
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages # سننشر الملفات في فرع خاص بالصفحات
