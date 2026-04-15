@@ -1,11 +1,13 @@
-name: Update NasaPhone Repo
+name: Update NasaPhone Repo (Release Mode)
 
 on:
   workflow_dispatch: # تشغيل يدوي من تبويب Actions
 
 jobs:
-  build_and_deploy:
+  build_and_release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # ضروري للسماح للسكربت بإنشاء Release ونشر الملفات
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -18,7 +20,7 @@ jobs:
 
       - name: Download APK from MediaFire
         run: |
-          # تحميل الملف وتسميته بالاسم المتفق عليه في الفهرس
+          # تحميل الملف من الرابط المباشر
           wget -O ABWhatsApp_Blue_v30_arm64.apk "https://download1507.mediafire.com/jnebkx5zubcgFd4d9WcpJvaUyk9EYk8z1TlHmiUeuqSolDqQKfRR3G6WjYKNOy1B7kTSdcGHaZu5qlXTgpoinuS4NnWSVsQHB3MZZpvSuq1cvQXURejSUVCyZlPG_eIyX4r8_obH3BhVWcTPYkvpRjkjJAetiLA0evDaIOqr_P58XIw/cj97u5khag81kjc/ABWhatsApp_Blue_v30.apk"
 
       - name: Run Generate Script
@@ -28,13 +30,20 @@ jobs:
 
       - name: Sign Index Jar
         run: |
-          # تأكد أن ملف nasa_new.jks موجود في المستودع الرئيسي
+          # التأكد من وجود nasa_new.jks في المستودع
           zip index-v1.jar index-v1.json
           jarsigner -keystore nasa_new.jks -storepass nasaphone123 -keypass nasaphone123 index-v1.jar nasa_alias
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
+          tag_name: v30 # يمكنك تغيير الرقم مع كل تحديث كبير
+          name: "NasaPhone Update v30"
+          draft: false
+          prerelease: false
+          files: |
+            ABWhatsApp_Blue_v30_arm64.apk
+            index-v1.jar
+            index-v1.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
