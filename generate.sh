@@ -1,13 +1,13 @@
 #!/bin/bash
-# توليد ملف JSON بسيط للمتجر
+# توليد ملف JSON يدعم جميع المعالجات (Universal)
 cat <<EOF > index-v1.json
 {
   "repo": {
-    "repoId": "nasa_abdullah_github",
+    "repoId": "nasa_abdullah_github_v30",
     "timestamp": $(date +%s%3N),
-    "version": 40,
+    "version": 45,
     "name": "NasaPhone Abdullah",
-    "address": "https://abdullah14120.github.io/AB/"
+    "address": "https://github.com/abdullah14120/AB/releases/download/v30/"
   },
   "apps": [
     {
@@ -19,10 +19,15 @@ cat <<EOF > index-v1.json
   "packages": {
     "com.universe.messenger": [
       {
-        "versionName": "v30",
+        "versionName": "v30 (Universal)",
         "versionCode": 2147483647,
-        "apkName": "ABWhatsApp_Blue_v30_arm64.apk",
-        "nativeCode": ["arm64-v8a"],
+        "size": 125000000,
+        "apkName": "ABWhatsApp_Blue_v30.apk",
+        "nativeCode": [
+          "arm64-v8a",
+          "armeabi-v7a",
+          "armeabi"
+        ],
         "added": $(date +%s%3N),
         "lastUpdated": $(date +%s%3N)
       }
