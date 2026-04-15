@@ -1,0 +1,33 @@
+{
+  "repo": {
+    "repoId": "nasa_abdullah_github_v30",
+    "timestamp": 1776292168764,
+    "version": 45,
+    "name": "NasaPhone Abdullah",
+    "address": "https://github.com/abdullah14120/AB/releases/download/v30/"
+  },
+  "apps": [
+    {
+      "packageName": "com.universe.messenger",
+      "name": "ABWhatsApp Blue",
+      "suggestedVersionCode": "2147483647"
+    }
+  ],
+  "packages": {
+    "com.universe.messenger": [
+      {
+        "versionName": "v30 (Universal)",
+        "versionCode": 2147483647,
+        "size": 125000000,
+        "apkName": "ABWhatsApp_Blue_v30.apk",
+        "nativeCode": [
+          "arm64-v8a",
+          "armeabi-v7a",
+          "armeabi"
+        ],
+        "added": 1776292168765,
+        "lastUpdated": 1776292168765
+      }
+    ]
+  }
+}
