@@ -1,0 +1,40 @@
+name: Update NasaPhone Repo
+
+on:
+  workflow_dispatch: # تشغيل يدوي من تبويب Actions
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download APK from MediaFire
+        run: |
+          # تحميل الملف وتسميته بالاسم المتفق عليه في الفهرس
+          wget -O ABWhatsApp_Blue_v30_arm64.apk "https://download1507.mediafire.com/jnebkx5zubcgFd4d9WcpJvaUyk9EYk8z1TlHmiUeuqSolDqQKfRR3G6WjYKNOy1B7kTSdcGHaZu5qlXTgpoinuS4NnWSVsQHB3MZZpvSuq1cvQXURejSUVCyZlPG_eIyX4r8_obH3BhVWcTPYkvpRjkjJAetiLA0evDaIOqr_P58XIw/cj97u5khag81kjc/ABWhatsApp_Blue_v30.apk"
+
+      - name: Run Generate Script
+        run: |
+          chmod +x generate.sh
+          ./generate.sh
+
+      - name: Sign Index Jar
+        run: |
+          # تأكد أن ملف nasa_new.jks موجود في المستودع الرئيسي
+          zip index-v1.jar index-v1.json
+          jarsigner -keystore nasa_new.jks -storepass nasaphone123 -keypass nasaphone123 index-v1.jar nasa_alias
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
